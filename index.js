@@ -8,22 +8,22 @@ var file = new osmium.File(argv.file);
 var reader = new osmium.Reader(file);
 var stream = new osmium.Stream(new osmium.Reader(file, {relation: true, node: false, ways: false}));
 
-var mapboxCount = 0;
-var otherCount = 0;
+var tr_mapboxCount = 0;
+var tr_otherCount = 0;
 
 stream.on('data', function (data) {
     var f;
     var tags = data.tags();
     if (tags.hasOwnProperty('type') && tags.type === 'restriction') {
         if (!(team.indexOf(data.user) < 0 )) {
-           mapboxCount = mapboxCount + 1;
+           tr_mapboxCount = tr_mapboxCount + 1;
        } else {
-        otherCount = otherCount + 1
+        tr_otherCount = tr_otherCount + 1;
        }
    }
 });
 
 stream.on('end', function() {
-    process.stderr.write('TR by Mapbox: ' + String(mapboxCount) + '\n');
-    process.stderr.write('TR by Others: ' + String(otherCount) + '\n');
+    process.stderr.write('TR by Mapbox: ' + String(tr_mapboxCount) + '\n');
+    process.stderr.write('TR by Others: ' + String(tr_otherCount) + '\n');
 });
